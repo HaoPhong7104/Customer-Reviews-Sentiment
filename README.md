@@ -15,7 +15,10 @@ Project dùng 7.366 review skincare, chủ yểu phân tích 5 brand: Eucerin, C
 
 
 ## Notebook 0  — Thu thập & Gom dữ liệu thô
-- Xử lý dữ liệu cơ bản sau khi có dữ liệu thô từ sàn Lazada
+- Xử lý dữ liệu cơ bản sau khi có dữ liệu thô được crawl từ sàn Lazada
+- Lọc sản phẩm thuộc 5 thương hiệu mục tiêu.
+- Ghép thông tin sản phẩm với review theo product_id, tạo tập dữ liệu đầu vào cho bước tiền xử lý.
+  
 ## Notebook 1 — Xử lý dữ liệu
 - **Lọc ngôn ngữ**: dùng `langdetect` để chỉ giữ lại review tiếng Việt —
   phát hiện dữ liệu gốc có lẫn 383/7.806 review (~4.9%) không phải tiếng
