@@ -1,0 +1,59 @@
+{
+  "name": "Review Sentiment · Light",
+  "dataColors": [
+    "#0F9D91",
+    "#2563EB",
+    "#7C3AED",
+    "#F59E0B",
+    "#E5484D",
+    "#039855"
+  ],
+  "background": "#F3F6FA",
+  "foreground": "#0F172A",
+  "tableAccent": "#0F9D91",
+  "good": "#039855",
+  "neutral": "#F59E0B",
+  "bad": "#E5484D",
+  "maximum": "#039855",
+  "center": "#F59E0B",
+  "minimum": "#E5484D",
+  "visualStyles": {
+    "*": {
+      "*": {
+        "title": [
+          {
+            "fontFace": "Segoe UI",
+            "fontSize": 12,
+            "fontColor": {
+              "solid": {
+                "color": "#0F172A"
+              }
+            }
+          }
+        ],
+        "background": [
+          {
+            "show": true,
+            "color": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "transparency": 0
+          }
+        ],
+        "border": [
+          {
+            "show": true,
+            "color": {
+              "solid": {
+                "color": "#E2E8F0"
+              }
+            },
+            "radius": 12
+          }
+        ]
+      }
+    }
+  }
+}

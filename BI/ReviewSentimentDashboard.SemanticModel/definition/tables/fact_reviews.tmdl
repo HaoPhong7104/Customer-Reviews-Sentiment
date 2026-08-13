@@ -1,0 +1,209 @@
+table fact_reviews
+	lineageTag: 60954420-3bb9-4bf5-8d10-71677470b2db
+
+	column review_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 399d1ee3-460e-4018-b464-3431fa31c10a
+		summarizeBy: sum
+		sourceColumn: review_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 5a75d7b6-6fa0-4bf4-b447-f0a802c6765a
+		summarizeBy: sum
+		sourceColumn: product_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column brand_name
+		dataType: string
+		lineageTag: 40b93c95-e904-478c-b1cf-1efbf70a3a75
+		summarizeBy: none
+		sourceColumn: brand_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 9cc9d527-6090-49f7-b269-0943b2f43c0e
+		summarizeBy: none
+		sourceColumn: date_key
+
+		variation Variation
+			isDefault
+			relationship: 0b4b99ad-1c2a-4d02-bff3-df20dc813a8c
+			defaultHierarchy: LocalDateTable_1985a13d-ce0c-40af-b12e-e34602c78b1b.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column review_score
+		dataType: int64
+		formatString: 0
+		lineageTag: 479c704c-92b3-44a6-b6a7-c8dc385fbe2a
+		summarizeBy: sum
+		sourceColumn: review_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column review_len
+		dataType: int64
+		formatString: 0
+		lineageTag: a4ba7fbc-3ca5-485f-a7aa-71ba019ba48a
+		summarizeBy: sum
+		sourceColumn: review_len
+
+		annotation SummarizationSetBy = Automatic
+
+	column word_count
+		dataType: int64
+		formatString: 0
+		lineageTag: 33a219bb-4f22-402b-a008-248cd12e7830
+		summarizeBy: sum
+		sourceColumn: word_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column dup_count
+		dataType: int64
+		formatString: 0
+		lineageTag: 6197e093-e439-40fc-8c51-b5c5a321e271
+		summarizeBy: sum
+		sourceColumn: dup_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_template_like
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: ccc8387d-f945-4ce8-84d3-dfd470ce56e5
+		summarizeBy: none
+		sourceColumn: is_template_like
+
+		annotation SummarizationSetBy = Automatic
+
+	column primary_sentiment
+		dataType: string
+		lineageTag: 41c18544-1671-423a-b56c-b26155ac04a3
+		summarizeBy: none
+		sourceColumn: primary_sentiment
+
+		annotation SummarizationSetBy = Automatic
+
+	column has_negative_aspect
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 89d38640-15ca-41d4-a3af-0be53e6746f3
+		summarizeBy: none
+		sourceColumn: has_negative_aspect
+
+		annotation SummarizationSetBy = Automatic
+
+	column has_positive_aspect
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 6b9e2a26-7cef-4a9e-91b9-1aefac757575
+		summarizeBy: none
+		sourceColumn: has_positive_aspect
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_mixed_sentiment
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: f64e0399-090f-4c62-9864-0ae58dedbd84
+		summarizeBy: none
+		sourceColumn: is_mixed_sentiment
+
+		annotation SummarizationSetBy = Automatic
+
+	column hidden_complaint
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 572a4eaa-a37b-4b41-af08-673ccae51c39
+		summarizeBy: none
+		sourceColumn: hidden_complaint
+
+		annotation SummarizationSetBy = Automatic
+
+	column aspect_Hiệu_quả
+		dataType: int64
+		formatString: 0
+		lineageTag: 76363b64-c538-4d05-96f7-d2ac29fbfca5
+		summarizeBy: sum
+		sourceColumn: aspect_Hiệu_quả
+
+		annotation SummarizationSetBy = Automatic
+
+	column aspect_Giá_cả
+		dataType: int64
+		formatString: 0
+		lineageTag: ac9e3546-b7de-47fd-82b1-180a096660ae
+		summarizeBy: sum
+		sourceColumn: aspect_Giá_cả
+
+		annotation SummarizationSetBy = Automatic
+
+	column aspect_Chất_lượng
+		dataType: int64
+		formatString: 0
+		lineageTag: 5760884a-bdc2-482e-960f-6ea5c14c0fb7
+		summarizeBy: sum
+		sourceColumn: aspect_Chất_lượng
+
+		annotation SummarizationSetBy = Automatic
+
+	column aspect_Giao_hàng
+		dataType: int64
+		formatString: 0
+		lineageTag: c129b6bf-672c-4e43-95f9-d701d60ff377
+		summarizeBy: sum
+		sourceColumn: aspect_Giao_hàng
+
+		annotation SummarizationSetBy = Automatic
+
+	column aspect_Mùi_hương
+		dataType: int64
+		formatString: 0
+		lineageTag: 10de9783-2fb8-4890-8997-d9931abba7b4
+		summarizeBy: sum
+		sourceColumn: aspect_Mùi_hương
+
+		annotation SummarizationSetBy = Automatic
+
+	column aspect_Thành_phần
+		dataType: int64
+		formatString: 0
+		lineageTag: 768370a6-d59e-49f5-ab7a-a860322dd0d7
+		summarizeBy: sum
+		sourceColumn: aspect_Thành_phần
+
+		annotation SummarizationSetBy = Automatic
+
+	column aspect_Dịch_vụ
+		dataType: int64
+		formatString: 0
+		lineageTag: 50e54eea-b5ac-4bc5-a9a9-802ba40a688f
+		summarizeBy: sum
+		sourceColumn: aspect_Dịch_vụ
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_reviews = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("E:\Final_project\Customer Reviews Sentiment\Customer Reviews Sentiment\outputs\bi_export\fact_reviews.csv"),[Delimiter=",", Columns=21, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"review_id", Int64.Type}, {"product_id", Int64.Type}, {"brand_name", type text}, {"date_key", type date}, {"review_score", Int64.Type}, {"review_len", Int64.Type}, {"word_count", Int64.Type}, {"dup_count", Int64.Type}, {"is_template_like", type logical}, {"primary_sentiment", type text}, {"has_negative_aspect", type logical}, {"has_positive_aspect", type logical}, {"is_mixed_sentiment", type logical}, {"hidden_complaint", type logical}, {"aspect_Hiệu_quả", Int64.Type}, {"aspect_Giá_cả", Int64.Type}, {"aspect_Chất_lượng", Int64.Type}, {"aspect_Giao_hàng", Int64.Type}, {"aspect_Mùi_hương", Int64.Type}, {"aspect_Thành_phần", Int64.Type}, {"aspect_Dịch_vụ", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

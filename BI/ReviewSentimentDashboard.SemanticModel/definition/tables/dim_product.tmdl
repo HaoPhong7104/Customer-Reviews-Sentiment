@@ -1,0 +1,77 @@
+table dim_product
+	lineageTag: 98d0fe21-ff5e-4135-915e-928129c4aaad
+
+	column product_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 2e30b3d2-6ac7-4944-bcdd-8e7a6043986c
+		summarizeBy: sum
+		sourceColumn: product_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_name
+		dataType: string
+		lineageTag: fa5453f6-9272-45a4-b2aa-a021a0b53560
+		summarizeBy: none
+		sourceColumn: product_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column brand_name
+		dataType: string
+		lineageTag: c14572ae-cb98-415b-b07d-c8d39b60a324
+		summarizeBy: none
+		sourceColumn: brand_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column price_current
+		dataType: int64
+		formatString: 0
+		lineageTag: d0495642-c164-4abb-ba0b-30cdbe5f1dd8
+		summarizeBy: sum
+		sourceColumn: price_current
+
+		annotation SummarizationSetBy = Automatic
+
+	column price_original
+		dataType: int64
+		formatString: 0
+		lineageTag: c53e695b-f421-4d63-beb8-75d4ca8b6bf4
+		summarizeBy: sum
+		sourceColumn: price_original
+
+		annotation SummarizationSetBy = Automatic
+
+	column sold_count
+		dataType: int64
+		formatString: 0
+		lineageTag: 5c8fa2f0-4197-4ca9-853c-b6d4a3a87a25
+		summarizeBy: sum
+		sourceColumn: sold_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column discount_pct
+		dataType: double
+		lineageTag: d610b637-cd07-4f4f-ab16-04a3902887e2
+		summarizeBy: sum
+		sourceColumn: discount_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition dim_product = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("E:\Final_project\Customer Reviews Sentiment\Customer Reviews Sentiment\outputs\bi_export\dim_product.csv"),[Delimiter=",", Columns=7, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"product_id", Int64.Type}, {"product_name", type text}, {"brand_name", type text}, {"price_current", Int64.Type}, {"price_original", Int64.Type}, {"sold_count", Int64.Type}, {"discount_pct", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

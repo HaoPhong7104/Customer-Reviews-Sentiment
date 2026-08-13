@@ -1,0 +1,234 @@
+/// Kho DAX measures dùng cho toàn bộ dashboard.
+table _Measures
+	lineageTag: 9848876c-2e0e-46fd-a4fd-107b55e9e13b
+
+	measure 'Total Reviews' = COUNTROWS(fact_reviews)
+		formatString: #,0
+		displayFolder: KPI · Review
+		lineageTag: 11478c10-0d48-494c-8098-0391b29ca5dc
+
+	measure 'Avg Score' = AVERAGE(fact_reviews[review_score])
+		formatString: 0.00
+		displayFolder: KPI · Review
+		lineageTag: 1876ee62-5676-44f0-883a-c05f379ffe49
+
+	measure 'Hidden Complaints' = CALCULATE([Total Reviews], fact_reviews[hidden_complaint] = TRUE())
+		formatString: #,0
+		displayFolder: KPI · Complaint
+		lineageTag: 5f04e8a1-dd3e-4ce0-8237-d0fcddeb5043
+
+	measure '% Hidden Complaint' = DIVIDE([Hidden Complaints], [Total Reviews])
+		formatString: 0.0%
+		displayFolder: KPI · Complaint
+		lineageTag: 4b769805-444b-4e3d-bdba-dedac524c71c
+
+	measure 'Mixed Reviews' = CALCULATE([Total Reviews], fact_reviews[is_mixed_sentiment] = TRUE())
+		formatString: #,0
+		displayFolder: KPI · Sentiment
+		lineageTag: 789dbf49-8a6b-4788-9396-3e8527af3837
+
+	measure '% Mixed Sentiment' = DIVIDE([Mixed Reviews], [Total Reviews])
+		formatString: 0.0%
+		displayFolder: KPI · Sentiment
+		lineageTag: 4b098644-add1-44ec-9d54-d18588bf724f
+
+	measure 'Template Reviews' = CALCULATE([Total Reviews], fact_reviews[is_template_like] = TRUE())
+		formatString: #,0
+		displayFolder: KPI · Quality
+		lineageTag: d3b8d518-ffd0-4a75-a93a-c4d16872b648
+
+	measure '% Template Like' = DIVIDE([Template Reviews], [Total Reviews])
+		formatString: 0.0%
+		displayFolder: KPI · Quality
+		lineageTag: f2515e55-9c4e-4790-b793-886a649d6d7b
+
+	measure 'Low Score Reviews' = CALCULATE([Total Reviews], fact_reviews[review_score] <= 2)
+		formatString: #,0
+		displayFolder: KPI · Quality
+		lineageTag: c0428bf8-fbaf-437c-b354-e0d9bbc5289d
+
+	measure '% Low Score' = DIVIDE([Low Score Reviews], [Total Reviews])
+		formatString: 0.0%
+		displayFolder: KPI · Quality
+		lineageTag: f66dd1df-1c74-4ba8-8d46-de591054bcc2
+
+	measure 'Current Month Reviews' =
+			VAR CurrentMonth = MAX(dim_date[date_key])
+			RETURN
+			    CALCULATE(
+			        [Total Reviews],
+			        REMOVEFILTERS(dim_date),
+			        dim_date[date_key] = CurrentMonth
+			    )
+		formatString: #,0
+		displayFolder: Time Intelligence
+		lineageTag: 125277b7-97a2-4792-bffc-48766c0b0fe3
+
+	measure 'MoM Volume Change %' =
+			VAR CurrentMonth = MAX(dim_date[date_key])
+			VAR CurrentVol =
+			    CALCULATE(
+			        [Total Reviews],
+			        REMOVEFILTERS(dim_date),
+			        dim_date[date_key] = CurrentMonth
+			    )
+			VAR PrevVol =
+			    CALCULATE(
+			        [Total Reviews],
+			        REMOVEFILTERS(dim_date),
+			        dim_date[date_key] = EDATE(CurrentMonth, -1)
+			    )
+			RETURN DIVIDE(CurrentVol - PrevVol, PrevVol)
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: Time Intelligence
+		lineageTag: ab45b509-ed98-4193-b942-973308bba70c
+
+	measure 'Aspect Mentions' = COUNTROWS(fact_absa)
+		formatString: #,0
+		displayFolder: ABSA
+		lineageTag: 1640fb7a-0ec0-42a7-a2f2-aee9ac8da48c
+
+	measure 'Positive Aspect Mentions' = CALCULATE([Aspect Mentions], fact_absa[clause_sentiment] = "positive")
+		formatString: #,0
+		displayFolder: ABSA
+		lineageTag: d5810a3b-0449-43aa-9a82-f210d5cea742
+
+	measure 'Neutral Aspect Mentions' = CALCULATE([Aspect Mentions], fact_absa[clause_sentiment] = "neutral")
+		formatString: #,0
+		displayFolder: ABSA
+		lineageTag: d273054c-217e-4d05-904f-fb2ceecb2966
+
+	measure 'Negative Aspect Mentions' = CALCULATE([Aspect Mentions], fact_absa[clause_sentiment] = "negative")
+		formatString: #,0
+		displayFolder: ABSA
+		lineageTag: 12371017-a344-4647-8af7-41bcccbd71e5
+
+	measure '% Negative Aspect' = DIVIDE([Negative Aspect Mentions], [Aspect Mentions])
+		formatString: 0.0%
+		displayFolder: ABSA
+		lineageTag: 7de47249-dd76-408a-9e61-63e41b1e126a
+
+	measure 'Aspect Net Sentiment' = DIVIDE([Positive Aspect Mentions] - [Negative Aspect Mentions], [Aspect Mentions])
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: ABSA
+		lineageTag: 03b1f489-9abd-412b-bee9-16193a61dba4
+
+	measure 'Sentiment Color' =
+			VAR Net = [Aspect Net Sentiment]
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        ISBLANK(Net), "#E2E8F0",
+			        Net < 0.10, "#FCA5A5",
+			        Net < 0.30, "#FDE68A",
+			        Net < 0.50, "#A7F3D0",
+			        "#34D399"
+			    )
+		displayFolder: ABSA
+		lineageTag: 7ab59f9b-47c9-46da-9732-b9024622022e
+
+	measure Products = DISTINCTCOUNT(dim_product[product_id])
+		formatString: #,0
+		displayFolder: Commercial Proxy
+		lineageTag: 8b05ae2c-3dc4-4c94-8058-d390b870ad89
+
+	measure 'Sold Count' = SUM(dim_product[sold_count])
+		formatString: #,0
+		displayFolder: Commercial Proxy
+		lineageTag: 99f08acc-eda7-4e3d-8618-737c08f397c6
+
+	measure 'Revenue Proxy' = SUMX(dim_product, dim_product[price_current] * dim_product[sold_count])
+		formatString: #,0
+		displayFolder: Commercial Proxy
+		lineageTag: 63ab4196-7b54-43d0-bd4c-60da73fb1206
+
+	measure 'Top Hidden Complaint Brand' =
+			VAR Ranked =
+			    TOPN(
+			        1,
+			        ADDCOLUMNS(ALLSELECTED(dim_brand[brand_name]), "__Rate", [% Hidden Complaint]),
+			        [__Rate], DESC,
+			        dim_brand[brand_name], ASC
+			    )
+			RETURN
+			    MAXX(Ranked, dim_brand[brand_name]) & " · " &
+			    FORMAT(MAXX(Ranked, [__Rate]), "0.0%")
+		displayFolder: Ad-hoc Insights
+		lineageTag: ceaf6780-9d97-4eb1-b087-15d61d54c8b1
+
+	measure 'Weakest Aspect' =
+			VAR Ranked =
+			    TOPN(
+			        1,
+			        ADDCOLUMNS(ALLSELECTED(fact_absa[aspect]), "__Net", [Aspect Net Sentiment]),
+			        [__Net], ASC,
+			        fact_absa[aspect], ASC
+			    )
+			RETURN
+			    MAXX(Ranked, fact_absa[aspect]) & " · " &
+			    FORMAT(MAXX(Ranked, [__Net]), "+0.0%;-0.0%;0.0%")
+		displayFolder: Ad-hoc Insights
+		lineageTag: c9d91b6f-3d76-4c6a-8d3c-fbf5578c5578
+
+	measure 'Top Complaint Product' =
+			VAR Eligible =
+			    FILTER(
+			        ADDCOLUMNS(
+			            VALUES(dim_product[product_name]),
+			            "__Reviews", [Total Reviews],
+			            "__Hidden", [Hidden Complaints]
+			        ),
+			        [__Reviews] >= 10
+			    )
+			VAR Ranked = TOPN(1, Eligible, [__Hidden], DESC, [__Reviews], DESC)
+			RETURN
+			    MAXX(Ranked, dim_product[product_name]) & " · " &
+			    FORMAT(MAXX(Ranked, [__Hidden]), "#,0") & " complaint ẩn"
+		displayFolder: Ad-hoc Insights
+		lineageTag: 9d63fd62-5974-49bc-a644-429a7d0360cf
+
+	measure 'Highest Template Risk Brand' =
+			VAR Ranked =
+			    TOPN(
+			        1,
+			        ADDCOLUMNS(ALLSELECTED(dim_brand[brand_name]), "__Rate", [% Template Like]),
+			        [__Rate], DESC,
+			        dim_brand[brand_name], ASC
+			    )
+			RETURN
+			    MAXX(Ranked, dim_brand[brand_name]) & " · " &
+			    FORMAT(MAXX(Ranked, [__Rate]), "0.0%")
+		displayFolder: Ad-hoc Insights
+		lineageTag: e17fb148-747d-4948-9df9-ef0856007b47
+
+	measure 'Dashboard Title Overview' = "TỔNG QUAN"
+		displayFolder: UI
+		lineageTag: d3f231a8-d245-4188-99d5-cdf6139c8069
+
+	measure 'Dashboard Title Aspects' = "PHÂN TÍCH KHÍA CẠNH"
+		displayFolder: UI
+		lineageTag: ceabad4f-d871-453f-837c-944a9ac74f01
+
+	measure 'Dashboard Title Adhoc' = "Ad-hoc"
+		displayFolder: UI
+		lineageTag: 086256a9-37f6-46ff-a492-6360df651bfa
+
+	measure 'Dashboard Subtitle' = "Theo dõi chất lượng review, complaint ẩn và khía cạnh theo thương hiệu · 2019–2026"
+		displayFolder: UI
+		lineageTag: 6d5f16df-5ce6-49b5-8d27-a172cf4fcd48
+
+	column Value
+		dataType: int64
+		isHidden
+		lineageTag: 29546fbe-8e54-4b9a-8a63-c2791362c210
+		summarizeBy: none
+		sourceColumn: Value
+
+	partition _Measures = m
+		mode: import
+		source =
+				let
+				    Source = #table(type table [Value = Int64.Type], {{0}})
+				in
+				    Source
+

@@ -1,0 +1,28 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["_Measures","dim_brand","dim_date","dim_product","fact_absa","fact_reviews"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table _Measures
+ref table dim_brand
+ref table dim_date
+ref table DateTableTemplate_7b772163-0fb5-4b0c-ad75-4611930d4e3a
+ref table LocalDateTable_a8711544-e46d-4367-bdfb-5c1e739f4b8f
+ref table LocalDateTable_b2c03fdc-d4ca-4ac6-9d01-92572ffe3e83
+ref table dim_product
+ref table fact_absa
+ref table LocalDateTable_1fff2e0a-4db0-4259-b735-78751471459a
+ref table fact_reviews
+ref table LocalDateTable_1985a13d-ce0c-40af-b12e-e34602c78b1b
+
+ref cultureInfo en-US
+

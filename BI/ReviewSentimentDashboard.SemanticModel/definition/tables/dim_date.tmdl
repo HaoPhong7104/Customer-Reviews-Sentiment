@@ -1,0 +1,82 @@
+table dim_date
+	lineageTag: 952ea0fa-c162-468d-a323-e9bca312c13c
+
+	column date_key
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 96192c42-cd7f-47ca-8534-3dfbf710ba81
+		summarizeBy: none
+		sourceColumn: date_key
+
+		variation Variation
+			isDefault
+			relationship: 14b99b27-b29f-45c0-848b-0555c83d8b73
+			defaultHierarchy: LocalDateTable_a8711544-e46d-4367-bdfb-5c1e739f4b8f.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column review_year
+		dataType: int64
+		formatString: 0
+		lineageTag: 58d4f033-c8de-47cf-87d5-92d462329c9d
+		summarizeBy: sum
+		sourceColumn: review_year
+
+		annotation SummarizationSetBy = Automatic
+
+	column review_month
+		dataType: int64
+		formatString: 0
+		lineageTag: 6bbaeb0b-f339-4102-a0f7-884e23004019
+		summarizeBy: sum
+		sourceColumn: review_month
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_name
+		dataType: string
+		lineageTag: a6e578f2-d0ec-4497-9d2a-b2317e497d01
+		summarizeBy: none
+		sourceColumn: month_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column quarter
+		dataType: int64
+		formatString: 0
+		lineageTag: 6b9d6f0c-0038-43f1-9e55-5fc7d41db9d9
+		summarizeBy: sum
+		sourceColumn: quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column year_month
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: b6eb735d-0499-453b-86d2-c66980649c63
+		summarizeBy: none
+		sourceColumn: year_month
+
+		variation Variation
+			isDefault
+			relationship: f3d58903-59a0-4524-b6e0-5649ce0df7d2
+			defaultHierarchy: LocalDateTable_b2c03fdc-d4ca-4ac6-9d01-92572ffe3e83.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition dim_date = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("E:\Final_project\Customer Reviews Sentiment\Customer Reviews Sentiment\outputs\bi_export\dim_date.csv"),[Delimiter=",", Columns=6, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"date_key", type date}, {"review_year", Int64.Type}, {"review_month", Int64.Type}, {"month_name", type text}, {"quarter", Int64.Type}, {"year_month", type date}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

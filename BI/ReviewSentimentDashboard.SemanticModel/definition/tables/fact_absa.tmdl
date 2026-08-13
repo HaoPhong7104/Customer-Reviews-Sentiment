@@ -1,0 +1,73 @@
+table fact_absa
+	lineageTag: cd97258a-78ad-465f-822c-b0ea1d014b9e
+
+	column review_id
+		dataType: int64
+		formatString: 0
+		lineageTag: eea5ab7e-69cb-4d66-9843-61b002f15d1d
+		summarizeBy: sum
+		sourceColumn: review_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 6870a700-c9b4-4495-b73e-10ec4a91e27f
+		summarizeBy: sum
+		sourceColumn: product_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column brand_name
+		dataType: string
+		lineageTag: fe69c010-0818-4b4a-b397-2ff3ccbeaf7e
+		summarizeBy: none
+		sourceColumn: brand_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 97336bc8-0df4-49ea-bfa0-f37fd02a162a
+		summarizeBy: none
+		sourceColumn: date_key
+
+		variation Variation
+			isDefault
+			relationship: 3d19ffc7-4689-4b49-88a4-b673f352a01c
+			defaultHierarchy: LocalDateTable_1fff2e0a-4db0-4259-b735-78751471459a.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column aspect
+		dataType: string
+		lineageTag: cda852c6-457e-436b-b977-71b776c7649d
+		summarizeBy: none
+		sourceColumn: aspect
+
+		annotation SummarizationSetBy = Automatic
+
+	column clause_sentiment
+		dataType: string
+		lineageTag: e888ceae-ca69-4fb9-8af2-e6f8d5e80ff8
+		summarizeBy: none
+		sourceColumn: clause_sentiment
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_absa = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("E:\Final_project\Customer Reviews Sentiment\Customer Reviews Sentiment\outputs\bi_export\fact_absa.csv"),[Delimiter=",", Columns=6, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"review_id", Int64.Type}, {"product_id", Int64.Type}, {"brand_name", type text}, {"date_key", type date}, {"aspect", type text}, {"clause_sentiment", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
