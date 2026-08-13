@@ -6,40 +6,17 @@ thông tin có giá trị, phân loại cảm xúc phản hồi, phân loại t�
 Project dùng 7.366 review skincare, chủ yểu phân tích 5 brand: Eucerin, CeraVe, Obagi, URIAGE, Murad;
 để giải quyết đúng việc cốt lõi đó, project này gói gọn trong **4 notebook chính**:
 
-| Notebook | Việc | Ánh xạ JD |
-|---|---|---|
+| Notebook | Việc |
+|---|---|
 | `00_data_collection_merge.ipynb` | Xử lý cơ bản dữ liệu thô thu thập được từ Lazada |
-| `01_data_processing.ipynb` | Lọc ngôn ngữ, làm sạch, EDA, phát hiện review rác/mẫu, gắn cờ khía cạnh | "xử lý dữ liệu", "xác định thông tin có giá trị" |
-| `02_absa_sentiment.ipynb` | ABSA rule-based: sentiment riêng cho từng khía cạnh trong 1 review | "phân loại cảm xúc" + "phân loại tính chất sản phẩm" |
-| `03_powerbi_export.ipynb` | Xuất star schema, sẵn sàng nạp Power BI | trình bày dashboard trên tool BI |
+| `01_data_processing.ipynb` | Lọc ngôn ngữ, làm sạch, EDA, phát hiện review rác/mẫu, gắn cờ khía cạnh | 
+| `02_absa_sentiment.ipynb` | ABSA rule-based: sentiment riêng cho từng khía cạnh trong 1 review |
+| `03_powerbi_export.ipynb` | Xuất star schema, sẵn sàng nạp Power BI | 
 
 
-
-## 2. Cấu trúc project
-```
-skincare_project/
-├── README.md
-├── requirements.txt
-├── scripts/
-│   └── common.py                 # module dùng chung: lexicon, aspect keywords, ABSA utils
-├── notebooks/
-│   ├── 00_data_collection_merge.ipynb   
-│   ├── 01_data_processing.ipynb
-│   ├── 02_absa_sentiment.ipynb
-│   └── 03_powerbi_export.ipynb
-├── BI/
-│   └── Customer Reviews and Product Sentiment.htlm
-└── outputs/
-    ├── clean_reviews.csv           # output notebook 1
-    ├── absa_results.csv            # output notebook 2 (long format: review x aspect x sentiment)
-    ├── absa_review_summary.csv     # output notebook 2 (1 dòng/review)
-    ├── figures/                    # 5 biểu đồ .png
-    └── bi_export/                  # output notebook 4: dim_brand, dim_product, dim_date, fact_reviews, fact_absa (star schema cho Power BI)
-
-```
-## 3. Notebook 0  — Thu thập & Gom dữ liệu thô
+## 2. Notebook 0  — Thu thập & Gom dữ liệu thô
 - Xử lý dữ liệu cơ bản sau khi có dữ liệu thô từ sàn Lazada
-## 4. Notebook 1 — Xử lý dữ liệu
+## 3. Notebook 1 — Xử lý dữ liệu
 - **Lọc ngôn ngữ**: dùng `langdetect` để chỉ giữ lại review tiếng Việt —
   phát hiện dữ liệu gốc có lẫn 383/7.806 review (~4.9%) không phải tiếng
   Việt (196 review tiếng Anh hợp lệ + phần còn lại là spam/gibberish bị
@@ -53,7 +30,7 @@ skincare_project/
   Giao hàng, Mùi hương/Kết cấu, Thành phần, Dịch vụ/Uy tín) cho từng
   review bằng từ điển từ khóa (multi-label).
 
-## 5. Notebook 2 — ABSA rule-based
+## 4. Notebook 2 — ABSA rule-based
 Vì sao không dùng "1 review = 1 sentiment": review skincare thường **vừa
 khen vừa chê** ("sản phẩm tốt nhưng giao hàng chậm") — nếu gán 1 nhãn
 chung sẽ mất thông tin. ABSA giải quyết bằng cách:
@@ -81,14 +58,12 @@ hạn cố hữu của mọi phương pháp rule-based (danh sách từ không b
 (PhoBERT), không phải mở rộng từ điển mãi.
 
 
-## 6. Notebook 4 — Xuất Power BI
+## 5. Notebook 4 — Xuất Power BI
 Xuất theo mô hình **star schema**: 3 bảng dimension (`dim_brand`,
 `dim_product` đã dedup giá/sold_count, `dim_date`) + 2 bảng fact:
 - `fact_reviews` (grain = 1 review, có sẵn cờ khía cạnh + `hidden_complaint`)
 - `fact_absa` (grain = 1 review × 1 khía cạnh, dùng để lọc/slice theo
   khía cạnh trong Power BI, VD "chỉ xem sentiment khía cạnh Giao hàng")
-
-Import thẳng vào Power BI, không cần xử lý gì thêm. 
 
 ## 7. Hạn chế 
 - Aspect keyword và lexicon cảm xúc là rule-based, tự xây bằng tay — nếu
