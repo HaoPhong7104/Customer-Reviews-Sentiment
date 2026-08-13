@@ -1,6 +1,6 @@
 # Phân tích & Phân loại Review Sản phẩm Skincare trên sàn TMĐT
 
-## 1. Vì sao chọn bài toán này
+## Vì sao chọn bài toán này
 Xử lý/phân loại dữ liệu từ MXH/sàn TMĐT, xác định
 thông tin có giá trị, phân loại cảm xúc phản hồi, phân loại tính chất sản phẩm từ đó hỗ trợ cho các brand.
 Project dùng 7.366 review skincare, chủ yểu phân tích 5 brand: Eucerin, CeraVe, Obagi, URIAGE, Murad;
@@ -14,9 +14,9 @@ Project dùng 7.366 review skincare, chủ yểu phân tích 5 brand: Eucerin, C
 | `03_powerbi_export.ipynb` | Xuất star schema, sẵn sàng nạp Power BI | 
 
 
-## 2. Notebook 0  — Thu thập & Gom dữ liệu thô
+## Notebook 0  — Thu thập & Gom dữ liệu thô
 - Xử lý dữ liệu cơ bản sau khi có dữ liệu thô từ sàn Lazada
-## 3. Notebook 1 — Xử lý dữ liệu
+## Notebook 1 — Xử lý dữ liệu
 - **Lọc ngôn ngữ**: dùng `langdetect` để chỉ giữ lại review tiếng Việt —
   phát hiện dữ liệu gốc có lẫn 383/7.806 review (~4.9%) không phải tiếng
   Việt (196 review tiếng Anh hợp lệ + phần còn lại là spam/gibberish bị
@@ -30,7 +30,7 @@ Project dùng 7.366 review skincare, chủ yểu phân tích 5 brand: Eucerin, C
   Giao hàng, Mùi hương/Kết cấu, Thành phần, Dịch vụ/Uy tín) cho từng
   review bằng từ điển từ khóa (multi-label).
 
-## 4. Notebook 2 — ABSA rule-based
+## Notebook 2 — ABSA rule-based
 Vì sao không dùng "1 review = 1 sentiment": review skincare thường **vừa
 khen vừa chê** ("sản phẩm tốt nhưng giao hàng chậm") — nếu gán 1 nhãn
 chung sẽ mất thông tin. ABSA giải quyết bằng cách:
@@ -51,13 +51,6 @@ chung sẽ mất thông tin. ABSA giải quyết bằng cách:
   trong 7 khía cạnh), "Mùi hương/Kết cấu" luôn được khen nhiều nhất
   (0.63–0.79).
 
-**Hạn chế:** lexicon rule-based vẫn sai ở các câu phủ định phức tạp hơn "không/chẳng" — ví dụ "mất uy tín" bị chấm nhầm
-thành tích cực vì không nhận diện "mất" là phủ định. Đây là giới
-hạn cố hữu của mọi phương pháp rule-based (danh sách từ không bao giờ đủ)
-— bước tiếp theo hợp lý để chính xác hơn là ABSA bằng model học sâu
-(PhoBERT), không phải mở rộng từ điển mãi.
-
-
 ## 5. Notebook 4 — Xuất Power BI
 Xuất theo mô hình **star schema**: 3 bảng dimension (`dim_brand`,
 `dim_product` đã dedup giá/sold_count, `dim_date`) + 2 bảng fact:
@@ -65,7 +58,7 @@ Xuất theo mô hình **star schema**: 3 bảng dimension (`dim_brand`,
 - `fact_absa` (grain = 1 review × 1 khía cạnh, dùng để lọc/slice theo
   khía cạnh trong Power BI, VD "chỉ xem sentiment khía cạnh Giao hàng")
 
-## 7. Hạn chế 
+## Hạn chế 
 - Aspect keyword và lexicon cảm xúc là rule-based, tự xây bằng tay — nếu
   có 200-300 review được gán nhãn thủ công sẽ đánh giá được độ chính xác
   thật (hiện tại chưa có ground truth để tính precision/recall chính
