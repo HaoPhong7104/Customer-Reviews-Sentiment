@@ -54,7 +54,7 @@ chung sẽ mất thông tin. ABSA giải quyết bằng cách:
   trong 7 khía cạnh), "Mùi hương/Kết cấu" luôn được khen nhiều nhất
   (0.63–0.79).
 
-## 5. Notebook 4 — Xuất Power BI
+## Notebook 3 — Xuất Power BI
 Xuất theo mô hình **star schema**: 3 bảng dimension (`dim_brand`,
 `dim_product` đã dedup giá/sold_count, `dim_date`) + 2 bảng fact:
 - `fact_reviews` (grain = 1 review, có sẵn cờ khía cạnh + `hidden_complaint`)
